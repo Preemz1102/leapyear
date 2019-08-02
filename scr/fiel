@@ -1,0 +1,63 @@
+module id = 1
+
+Grayson Completed moduleid = 1 on 5/7/15 completionid = 50
+
+insert Grayson Completed moduleid = 1 on 5/7/15 completionid = 50 >> mdl_local_recompetion_cmc
+
+update Grayson Completed moduleid = 1 on 5/7/16 completionid = 50 in mdl_course_module_completion
+
+Select 
+	val1
+	,val2
+	,val3
+	,MAX(val4)
+	,val5
+FROM(
+
+Select 
+	val1
+	,val2
+	,val3
+	,val4
+	,val5
+FROM mdl_course_module_completion cmc
+	INNER JOIN mdl_module m on cmc.MID = m.ID
+	INNER JOIN mdl_course c on cmc.CID = c.ID
+	INNER JOIN mdl_course_modle cm on cm.id = cmc.cmID
+	INNER JOIN mdl_user u on cmc.userID = u.id 
+WHERE cmc.completion = 1 
+	and cmc.MID in (10,11,23,44,64,23,5,677,8976,23)
+	and u.username='123456789'
+	and cmc.id in (
+	Select 
+	MAX(cmc.timeend)
+	FROM mdl_course_module_completion cmc
+	INNER JOIN mdl_user u on cmc.userID = u.id 
+	where u.username='123456789'
+	and cmc.MID in (10,11,23,44,64,23,5,677,8976,23)
+)
+
+union
+
+Select 
+	val1
+	,val2
+	,val3
+	,val4
+	,val5
+FROM mdl_local_recompletion_cmc cmc
+	INNER JOIN mdl_module m on cmc.MID = m.ID
+	INNER JOIN mdl_course c on cmc.CID = c.ID
+	INNER JOIN mdl_course_modle cm on cm.id = cmc.cmID
+	INNER JOIN mdl_user u on cmc.userID = u.id 
+WHERE cmc.completion = 1 
+	and cmc.MID in (10,11,23,44,64,23,5,677,8976,23)
+	and u.username='123456789'
+	and cmc.id in (
+	Select 
+	MAX(cmc.timeend)
+	FROM mdl_local_recompletion_cmc cmc
+	INNER JOIN mdl_user u on cmc.userID = u.id 
+	where u.username='123456789'
+)
+group by val1,val2,val3,val5
